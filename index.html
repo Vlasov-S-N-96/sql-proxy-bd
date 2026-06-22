@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>SQL Trainer</title>
 
-    <!-- Подключаем CodeMirror (как и раньше) -->
+    <!-- CodeMirror -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
@@ -12,9 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/sql-hint.min.js"></script>
 
-    <!-- НОВОЕ: подключаем внешний файл со стилями -->
+    <!-- Ваши стили -->
     <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
     <h1>SQL Trainer</h1>
@@ -23,7 +22,13 @@
             <strong>Доступные таблицы:</strong> <code>characters</code>, <code>library</code>
         </div>
 
-        <label for="sqlQuery"><strong>Ваш SQL-запрос (автодополнение работает при вводе):</strong></label>
+        <div class="examples">
+            <strong>Примеры запросов:</strong>
+            <button onclick="setQuery('SELECT * FROM characters LIMIT 10')">Все персонажи (10)</button>
+            <button onclick="setQuery('SELECT * FROM characters ORDER BY age DESC')">По возрасту (↓)</button>
+        </div>
+
+        <label for="sqlQuery"><strong>Ваш SQL-запрос (автодополнение: Tab или Ctrl+Space):</strong></label>
         <textarea id="sqlQuery" style="display:none;">SELECT * FROM characters LIMIT 10;</textarea>
 
         <br>
@@ -35,7 +40,7 @@
     </div>
 
     <script>
-        // ⬇⬇⬇ АДРЕС СЕРВЕРА ⬇⬇⬇
+        // ⬇ АДРЕС ВАШЕГО СЕРВЕРА ⬇
         const PROXY_URL = 'https://sql-proxy-bd.onrender.com/query';
 
         // Инициализация CodeMirror
@@ -45,6 +50,8 @@
             indentWithTabs: true,
             smartIndent: true,
             matchBrackets: true,
+            lineWrapping: true,
+            viewportMargin: Infinity,
             extraKeys: {
                 'Ctrl-Space': 'autocomplete',
                 'Tab': 'autocomplete'
