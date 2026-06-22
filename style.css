@@ -1,11 +1,10 @@
-/* style.css — все стили для SQL Query Tool */
-
+/* Общие стили */
 * {
     box-sizing: border-box;
 }
 
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     max-width: 1100px;
     margin: 30px auto;
     padding: 0 20px;
@@ -25,15 +24,36 @@ h1 {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-/* CodeMirror будет переопределять стили, но чтобы он вписывался */
+/* Блок с информацией о таблицах */
+.info {
+    background: #e7f3ff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    color: #004085;
+}
+.info code {
+    background: #cfe2ff;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* Редактор CodeMirror */
 .CodeMirror {
     border: 2px solid #ddd;
     border-radius: 8px;
     height: auto;
     min-height: 150px;
     font-size: 14px;
+    padding: 4px;
+    background: #fafafa;
+}
+.CodeMirror-focused {
+    border-color: #2d7a3a;
+    box-shadow: 0 0 0 3px rgba(45, 122, 58, 0.2);
 }
 
+/* Кнопка */
 .btn {
     padding: 12px 35px;
     background: #2d7a3a;
@@ -59,7 +79,12 @@ h1 {
     color: #666;
     margin-left: 15px;
 }
+.row-count {
+    margin-left: 15px;
+    color: #666;
+}
 
+/* Сообщения об ошибках / успехе */
 .error {
     color: #dc3545;
     background: #f8d7da;
@@ -67,7 +92,6 @@ h1 {
     border-radius: 8px;
     margin-top: 15px;
 }
-
 .success {
     color: #155724;
     background: #d4edda;
@@ -76,33 +100,30 @@ h1 {
     margin-top: 15px;
 }
 
+/* Таблица с результатами */
 table {
     border-collapse: collapse;
     width: 100%;
     margin-top: 20px;
     font-size: 14px;
 }
-
 th, td {
     border: 1px solid #ddd;
     padding: 10px 12px;
     text-align: left;
 }
-
 th {
     background: #e9ecef;
     font-weight: 600;
     position: sticky;
     top: 0;
 }
-
 tr:nth-child(even) {
     background: #f8f9fa;
 }
 tr:hover {
     background: #f1f3f5;
 }
-
 .table-wrapper {
     max-height: 500px;
     overflow-y: auto;
@@ -110,24 +131,10 @@ tr:hover {
     border: 1px solid #ddd;
 }
 
-.info {
-    background: #e7f3ff;
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    color: #004085;
-}
-
-.info code {
-    background: #cfe2ff;
-    padding: 2px 8px;
-    border-radius: 4px;
-}
-
+/* Блок с примерами запросов */
 .examples {
     margin: 10px 0;
 }
-
 .examples button {
     background: none;
     border: 1px solid #ccc;
@@ -138,12 +145,6 @@ tr:hover {
     font-size: 12px;
     font-family: monospace;
 }
-
 .examples button:hover {
     background: #e9ecef;
-}
-
-.row-count {
-    margin-left: 15px;
-    color: #666;
 }
