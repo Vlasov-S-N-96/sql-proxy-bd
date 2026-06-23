@@ -17,6 +17,13 @@ h1 {
     text-align: center;
 }
 
+.divider {
+    height: 4px;
+    background: linear-gradient(90deg, #1f6392, #107980);
+    margin-bottom: 20px;
+    border-radius: 2px;
+}
+
 .container {
     background: white;
     padding: 25px;
