@@ -2,14 +2,15 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SQL Trainer</title>
 
     <!-- CodeMirror -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/sql-hint.min.js"></script>
 
     <!-- Ваши стили -->
@@ -17,17 +18,59 @@
 </head>
 <body>
     <h1>SQL Trainer</h1>
+
     <div class="container">
+        <!-- Информация о доступных таблицах -->
         <div class="info">
             <strong>Доступные таблицы:</strong> <code>characters</code>, <code>library</code>
         </div>
 
+        <!-- Схема базы данных -->
+        <div class="schema">
+            <h2>Схема базы данных</h2>
+            <div class="schema-tables">
+                <!-- Таблица characters -->
+                <div class="schema-table">
+                    <div class="schema-table-name">characters</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> char_id <span class="type">int4</span></div>
+                        <div class="schema-column">fname <span class="type">varchar</span></div>
+                        <div class="schema-column">lname <span class="type">varchar</span></div>
+                        <div class="schema-column">age <span class="type">int4</span></div>
+                        <div class="schema-column">faculty <span class="type">varchar</span></div>
+                        <div class="schema-column">patronus <span class="type">varchar</span></div>
+                        <div class="schema-column"><span class="fk">🔗</span> book_id <span class="type">int4</span> → library.lib_id</div>
+                    </div>
+                </div>
+                <!-- Стрелка связи -->
+                <div class="schema-arrow">⟶</div>
+                <!-- Таблица library -->
+                <div class="schema-table">
+                    <div class="schema-table-name">library</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> lib_id <span class="type">int4</span></div>
+                        <div class="schema-column">char_id <span class="type">int4</span></div>
+                        <div class="schema-column">book_name <span class="type">varchar</span></div>
+                        <div class="schema-column">start_date <span class="type">date</span></div>
+                        <div class="schema-column">end_date <span class="type">date</span></div>
+                        <div class="schema-column">book_id <span class="type">int4</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="schema-legend">
+                <span><span class="pk">🔑</span> Первичный ключ</span>
+                <span><span class="fk">🔗</span> Внешний ключ</span>
+            </div>
+        </div>
+
+        <!-- Примеры запросов -->
         <div class="examples">
             <strong>Примеры запросов:</strong>
             <button onclick="setQuery('SELECT * FROM characters LIMIT 10')">Все персонажи (10)</button>
-            <button onclick="setQuery('SELECT * FROM characters ORDER BY age DESC')">По возрасту (↓)</button>
+            <button onclick="setQuery('SELECT * FROM characters ORDER BY age DESC NULLS LAST')">По возрасту (↓)</button>
         </div>
 
+        <!-- Редактор SQL -->
         <label for="sqlQuery"><strong>Ваш SQL-запрос (автодополнение: Tab или Ctrl+Space):</strong></label>
         <textarea id="sqlQuery" style="display:none;">SELECT * FROM characters LIMIT 10;</textarea>
 
@@ -36,113 +79,11 @@
         <span class="loading" id="loading">⏳ Выполняется...</span>
         <span id="rowCount" class="row-count"></span>
 
+        <!-- Результат -->
         <div id="result"></div>
     </div>
 
-    <script>
-        // ⬇ АДРЕС ВАШЕГО СЕРВЕРА ⬇
-        const PROXY_URL = 'https://sql-proxy-bd.onrender.com/query';
-
-        // Инициализация CodeMirror
-        const editor = CodeMirror.fromTextArea(document.getElementById('sqlQuery'), {
-            mode: 'text/x-sql',
-            lineNumbers: true,
-            indentWithTabs: true,
-            smartIndent: true,
-            matchBrackets: true,
-            lineWrapping: true,
-            viewportMargin: Infinity,
-            extraKeys: {
-                'Ctrl-Space': 'autocomplete',
-                'Tab': 'autocomplete'
-            },
-            hintOptions: {
-                tables: {
-                    characters: ['char_id', 'fname', 'lname', 'age', 'faculty', 'patronus', 'book_id'],
-                    library: ['lib_id', 'char_id', 'book_name', 'start_date', 'end_date', 'book_id']
-                }
-            }
-        });
-
-        function setQuery(sql) {
-            editor.setValue(sql);
-        }
-
-        async function executeQuery() {
-            const sql = editor.getValue().trim();
-            if (!sql) { alert('Введите SQL-запрос'); return; }
-
-            const btn = document.getElementById('runBtn');
-            const loading = document.getElementById('loading');
-            const resultDiv = document.getElementById('result');
-            const rowCount = document.getElementById('rowCount');
-
-            btn.disabled = true;
-            loading.style.display = 'inline';
-            resultDiv.innerHTML = '';
-            rowCount.textContent = '';
-
-            try {
-                const response = await fetch(PROXY_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ sql })
-                });
-
-                const result = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(result.error || 'Ошибка сервера');
-                }
-
-                const data = result.data;
-
-                if (!data || data.length === 0) {
-                    resultDiv.innerHTML = `<div class="success">✅ Запрос выполнен. Результатов не найдено.</div>`;
-                    rowCount.textContent = '0 строк';
-                } else {
-                    resultDiv.innerHTML = buildTable(data);
-                    rowCount.textContent = `${data.length} строк${getDeclension(data.length)}`;
-                }
-
-            } catch (err) {
-                resultDiv.innerHTML = `<div class="error">❌ Ошибка: ${err.message}</div>`;
-            } finally {
-                btn.disabled = false;
-                loading.style.display = 'none';
-            }
-        }
-
-        function buildTable(data) {
-            const keys = Object.keys(data[0]);
-            let html = `<div class="table-wrapper"><table><thead><tr>`;
-            keys.forEach(k => html += `<th>${k}</th>`);
-            html += `</tr></thead><tbody>`;
-            data.forEach(row => {
-                html += `<tr>`;
-                keys.forEach(k => {
-                    let val = row[k];
-                    if (val === null || val === undefined) val = 'NULL';
-                    if (typeof val === 'string' && val.length > 50) val = val.substring(0, 50) + '…';
-                    html += `<td>${val}</td>`;
-                });
-                html += `</tr>`;
-            });
-            html += `</tbody></table></div>`;
-            return html;
-        }
-
-        function getDeclension(n) {
-            if (n % 10 === 1 && n % 100 !== 11) return 'а';
-            if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) return 'и';
-            return '';
-        }
-
-        window.onload = function() {
-            setTimeout(() => {
-                executeQuery();
-            }, 300);
-        };
-    </script>
+    <!-- Ваш скрипт -->
+    <script src="script.js"></script>
 </body>
 </html>
