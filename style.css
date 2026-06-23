@@ -36,6 +36,81 @@ h1 {
     border-radius: 4px;
 }
 
+/* ===== СХЕМА БАЗЫ ДАННЫХ ===== */
+.schema {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+    border: 1px solid #dee2e6;
+}
+.schema h2 {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #1a1a2e;
+}
+.schema-tables {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+.schema-table {
+    background: white;
+    border: 2px solid #2d7a3a;
+    border-radius: 8px;
+    min-width: 200px;
+    flex: 1 1 auto;
+}
+.schema-table-name {
+    background: #2d7a3a;
+    color: white;
+    padding: 8px 12px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 6px 6px 0 0;
+}
+.schema-columns {
+    padding: 8px 12px;
+}
+.schema-column {
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+    font-family: monospace;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+}
+.schema-column:last-child {
+    border-bottom: none;
+}
+.schema-column .type {
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+.pk, .fk {
+    margin-right: 4px;
+}
+.schema-arrow {
+    font-size: 2rem;
+    color: #2d7a3a;
+}
+.schema-legend {
+    margin-top: 10px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+.schema-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ===== ПРИМЕРЫ ===== */
 .examples {
     margin: 10px 0;
 }
@@ -53,6 +128,7 @@ h1 {
     background: #e9ecef;
 }
 
+/* ===== РЕДАКТОР ===== */
 .CodeMirror {
     border: 2px solid #ddd;
     border-radius: 8px;
@@ -112,6 +188,7 @@ h1 {
     margin-top: 15px;
 }
 
+/* ===== ТАБЛИЦА РЕЗУЛЬТАТОВ ===== */
 table {
     border-collapse: collapse;
     width: 100%;
@@ -140,4 +217,80 @@ tr:hover {
     overflow-y: auto;
     border-radius: 8px;
     border: 1px solid #ddd;
+}
+
+/* ===== АДАПТИВНОСТЬ (МОБИЛЬНЫЕ) ===== */
+@media (max-width: 768px) {
+    body {
+        padding: 0 10px;
+        margin: 15px auto;
+    }
+    .container {
+        padding: 15px;
+    }
+    .schema-tables {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .schema-arrow {
+        transform: rotate(90deg);
+    }
+    .schema-table {
+        min-width: unset;
+        width: 100%;
+    }
+    .examples button {
+        font-size: 11px;
+        padding: 3px 8px;
+    }
+    .CodeMirror {
+        min-height: 180px;
+        font-size: 13px;
+    }
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+    th, td {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+    .table-wrapper {
+        max-height: 400px;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .schema h2 {
+        font-size: 1rem;
+    }
+    .schema-column {
+        font-size: 0.8rem;
+        flex-wrap: wrap;
+    }
+    .schema-legend {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+    .info {
+        font-size: 0.9rem;
+    }
+    .examples button {
+        display: inline-block;
+        margin: 4px 2px;
+        font-size: 10px;
+    }
+    .btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+    .row-count, .loading {
+        margin-left: 0;
+        display: block;
+        margin-top: 5px;
+    }
 }
