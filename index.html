@@ -1,131 +1,195 @@
-<!-- Визуальная схема БД – две отдельные группы -->
-<div class="schema-display">
-    <!-- Группа 1: Интернет-магазин -->
-    <h3 class="schema-group-title">Интернет-магазин</h3>
-    <div class="schema-grid">
-        <!-- Таблицы intern_shop -->
-        <div class="schema-table-block">
-            <div class="schema-table-title">users</div>
-            <div class="schema-columns">
-                <div class="schema-column"><span class="pk">🔑</span> user_id <span class="type">int</span></div>
-                <div class="schema-column">login <span class="type">varchar</span></div>
-                <div class="schema-column">password <span class="type">varchar</span></div>
-                <div class="schema-column">token <span class="type">varchar</span></div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>SQL Trainer — Хогвартс + Интернет-магазин</title>
+
+    <!-- CodeMirror -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/sql-hint.min.js"></script>
+
+    <!-- Основные стили -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>SQL Trainer — Хогвартс + Интернет-магазин</h1>
+
+    <div class="container">
+        <!-- Информация о доступных таблицах -->
+        <div class="info">
+            <strong>Доступные таблицы:</strong> <code>characters</code>, <code>library</code> (Хогвартс) и <code>users</code>, <code>products</code>, <code>orders</code>, <code>cart_items</code>, <code>order_items</code>, <code>order_items_paid</code>, <code>orders_total</code>, <code>paypal_info</code>, <code>card_info</code> (интернет-магазин).
+        </div>
+
+        <!-- ===== СХЕМА БАЗЫ ДАННЫХ ===== -->
+        <div class="schema">
+            <h2>Схема базы данных</h2>
+
+            <!-- Группа 1: Интернет-магазин -->
+            <h3 class="schema-group-title">Интернет-магазин</h3>
+            <div class="schema-grid">
+                <!-- Таблица users -->
+                <div class="schema-table-block">
+                    <div class="schema-table-title">users</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> user_id <span class="type">int</span></div>
+                        <div class="schema-column">login <span class="type">varchar</span></div>
+                        <div class="schema-column">password <span class="type">varchar</span></div>
+                        <div class="schema-column">token <span class="type">varchar</span></div>
+                    </div>
+                </div>
+                <!-- Таблица products -->
+                <div class="schema-table-block">
+                    <div class="schema-table-title">products</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> product_id <span class="type">int</span></div>
+                        <div class="schema-column">name <span class="type">varchar</span></div>
+                        <div class="schema-column">description <span class="type">text</span></div>
+                        <div class="schema-column">price <span class="type">decimal</span></div>
+                        <div class="schema-column">category <span class="type">varchar</span></div>
+                        <div class="schema-column">manufacturer <span class="type">varchar</span></div>
+                        <div class="schema-column">freeShipping <span class="type">boolean</span></div>
+                    </div>
+                </div>
+                <!-- Таблица orders -->
+                <div class="schema-table-block">
+                    <div class="schema-table-title">orders</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> order_id <span class="type">int</span></div>
+                        <div class="schema-column"><span class="fk">🔗</span> user_id <span class="type">int</span> → users</div>
+                        <div class="schema-column">status <span class="type">varchar</span></div>
+                        <div class="schema-column">payment_date <span class="type">timestamp</span></div>
+                        <div class="schema-column">delivery_date <span class="type">timestamp</span></div>
+                        <div class="schema-column">total <span class="type">decimal</span></div>
+                    </div>
+                </div>
+                <!-- Таблица cart_items -->
+                <div class="schema-table-block">
+                    <div class="schema-table-title">cart_items</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> cart_item_id <span class="type">int</span></div>
+                        <div class="schema-column"><span class="fk">🔗</span> user_id <span class="type">int</span> → users</div>
+                        <div class="schema-column"><span class="fk">🔗</span> product_id <span class="type">int</span> → products</div>
+                        <div class="schema-column">quantity <span class="type">int</span></div>
+                    </div>
+                </div>
+                <!-- Таблица order_items -->
+                <div class="schema-table-block">
+                    <div class="schema-table-title">order_items</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> order_item_id <span class="type">int</span></div>
+                        <div class="schema-column"><span class="fk">🔗</span> order_id <span class="type">int</span> → orders</div>
+                        <div class="schema-column"><span class="fk">🔗</span> product_id <span class="type">int</span> → products</div>
+                        <div class="schema-column">quantity <span class="type">int</span></div>
+                    </div>
+                </div>
+                <!-- Таблица order_items_paid -->
+                <div class="schema-table-block">
+                    <div class="schema-table-title">order_items_paid</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> id <span class="type">int</span></div>
+                        <div class="schema-column"><span class="fk">🔗</span> user_id <span class="type">int</span> → users</div>
+                        <div class="schema-column"><span class="fk">🔗</span> order_id <span class="type">int</span> → orders</div>
+                        <div class="schema-column"><span class="fk">🔗</span> product_id <span class="type">int</span> → products</div>
+                        <div class="schema-column">quantity <span class="type">smallint</span></div>
+                    </div>
+                </div>
+                <!-- Таблица orders_total -->
+                <div class="schema-table-block">
+                    <div class="schema-table-title">orders_total</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> user_id <span class="type">int</span> → users</div>
+                        <div class="schema-column">total <span class="type">decimal</span></div>
+                    </div>
+                </div>
+                <!-- Таблица paypal_info -->
+                <div class="schema-table-block">
+                    <div class="schema-table-title">paypal_info</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> paypal_id <span class="type">int</span></div>
+                        <div class="schema-column">email <span class="type">varchar</span></div>
+                        <div class="schema-column">balance <span class="type">decimal</span></div>
+                        <div class="schema-column">status <span class="type">varchar</span></div>
+                    </div>
+                </div>
+                <!-- Таблица card_info -->
+                <div class="schema-table-block">
+                    <div class="schema-table-title">card_info</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> card_id <span class="type">int</span></div>
+                        <div class="schema-column">card_type <span class="type">varchar</span></div>
+                        <div class="schema-column">expiry_month <span class="type">int</span></div>
+                        <div class="schema-column">expiry_year <span class="type">int</span></div>
+                        <div class="schema-column">cvv <span class="type">int</span></div>
+                        <div class="schema-column">balance <span class="type">decimal</span></div>
+                        <div class="schema-column">status <span class="type">varchar</span></div>
+                        <div class="schema-column">card_code <span class="type">char(16)</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Группа 2: Хогвартс -->
+            <h3 class="schema-group-title" style="margin-top: 30px;">Хогвартс</h3>
+            <div class="schema-grid">
+                <!-- Таблица characters -->
+                <div class="schema-table-block">
+                    <div class="schema-table-title">characters</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> char_id <span class="type">int</span></div>
+                        <div class="schema-column">fname <span class="type">varchar</span></div>
+                        <div class="schema-column">lname <span class="type">varchar</span></div>
+                        <div class="schema-column">age <span class="type">int</span></div>
+                        <div class="schema-column">faculty <span class="type">varchar</span></div>
+                        <div class="schema-column">patronus <span class="type">varchar</span></div>
+                        <div class="schema-column"><span class="fk">🔗</span> book_id <span class="type">int</span> → library</div>
+                    </div>
+                </div>
+                <!-- Таблица library -->
+                <div class="schema-table-block">
+                    <div class="schema-table-title">library</div>
+                    <div class="schema-columns">
+                        <div class="schema-column"><span class="pk">🔑</span> lib_id <span class="type">int</span></div>
+                        <div class="schema-column">char_id <span class="type">int</span></div>
+                        <div class="schema-column">book_name <span class="type">varchar</span></div>
+                        <div class="schema-column">start_date <span class="type">date</span></div>
+                        <div class="schema-column">end_date <span class="type">date</span></div>
+                        <div class="schema-column">book_id <span class="type">int</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Легенда -->
+            <div class="schema-legend">
+                <span><span class="pk">🔑</span> Первичный ключ</span>
+                <span><span class="fk">🔗</span> Внешний ключ</span>
             </div>
         </div>
-        <div class="schema-table-block">
-            <div class="schema-table-title">products</div>
-            <div class="schema-columns">
-                <div class="schema-column"><span class="pk">🔑</span> product_id <span class="type">int</span></div>
-                <div class="schema-column">name <span class="type">varchar</span></div>
-                <div class="schema-column">description <span class="type">text</span></div>
-                <div class="schema-column">price <span class="type">decimal</span></div>
-                <div class="schema-column">category <span class="type">varchar</span></div>
-                <div class="schema-column">manufacturer <span class="type">varchar</span></div>
-                <div class="schema-column">freeShipping <span class="type">boolean</span></div>
-            </div>
+
+        <!-- Примеры запросов -->
+        <div class="examples">
+            <strong>Примеры запросов:</strong>
+            <button onclick="setQuery('SELECT * FROM characters LIMIT 10')">Все персонажи (10)</button>
+            <button onclick="setQuery('SELECT * FROM characters ORDER BY age DESC NULLS LAST')">По возрасту (↓)</button>
+            <button onclick="setQuery('SELECT * FROM products LIMIT 5')">Товары (5)</button>
         </div>
-        <div class="schema-table-block">
-            <div class="schema-table-title">orders</div>
-            <div class="schema-columns">
-                <div class="schema-column"><span class="pk">🔑</span> order_id <span class="type">int</span></div>
-                <div class="schema-column"><span class="fk">🔗</span> user_id <span class="type">int</span> → users</div>
-                <div class="schema-column">status <span class="type">varchar</span></div>
-                <div class="schema-column">payment_date <span class="type">timestamp</span></div>
-                <div class="schema-column">delivery_date <span class="type">timestamp</span></div>
-                <div class="schema-column">total <span class="type">decimal</span></div>
-            </div>
-        </div>
-        <div class="schema-table-block">
-            <div class="schema-table-title">cart_items</div>
-            <div class="schema-columns">
-                <div class="schema-column"><span class="pk">🔑</span> cart_item_id <span class="type">int</span></div>
-                <div class="schema-column"><span class="fk">🔗</span> user_id <span class="type">int</span> → users</div>
-                <div class="schema-column"><span class="fk">🔗</span> product_id <span class="type">int</span> → products</div>
-                <div class="schema-column">quantity <span class="type">int</span></div>
-            </div>
-        </div>
-        <div class="schema-table-block">
-            <div class="schema-table-title">order_items</div>
-            <div class="schema-columns">
-                <div class="schema-column"><span class="pk">🔑</span> order_item_id <span class="type">int</span></div>
-                <div class="schema-column"><span class="fk">🔗</span> order_id <span class="type">int</span> → orders</div>
-                <div class="schema-column"><span class="fk">🔗</span> product_id <span class="type">int</span> → products</div>
-                <div class="schema-column">quantity <span class="type">int</span></div>
-            </div>
-        </div>
-        <div class="schema-table-block">
-            <div class="schema-table-title">order_items_paid</div>
-            <div class="schema-columns">
-                <div class="schema-column"><span class="pk">🔑</span> id <span class="type">int</span></div>
-                <div class="schema-column"><span class="fk">🔗</span> user_id <span class="type">int</span> → users</div>
-                <div class="schema-column"><span class="fk">🔗</span> order_id <span class="type">int</span> → orders</div>
-                <div class="schema-column"><span class="fk">🔗</span> product_id <span class="type">int</span> → products</div>
-                <div class="schema-column">quantity <span class="type">smallint</span></div>
-            </div>
-        </div>
-        <div class="schema-table-block">
-            <div class="schema-table-title">orders_total</div>
-            <div class="schema-columns">
-                <div class="schema-column"><span class="pk">🔑</span> user_id <span class="type">int</span> → users</div>
-                <div class="schema-column">total <span class="type">decimal</span></div>
-            </div>
-        </div>
-        <div class="schema-table-block">
-            <div class="schema-table-title">paypal_info</div>
-            <div class="schema-columns">
-                <div class="schema-column"><span class="pk">🔑</span> paypal_id <span class="type">int</span></div>
-                <div class="schema-column">email <span class="type">varchar</span></div>
-                <div class="schema-column">balance <span class="type">decimal</span></div>
-                <div class="schema-column">status <span class="type">varchar</span></div>
-            </div>
-        </div>
-        <div class="schema-table-block">
-            <div class="schema-table-title">card_info</div>
-            <div class="schema-columns">
-                <div class="schema-column"><span class="pk">🔑</span> card_id <span class="type">int</span></div>
-                <div class="schema-column">card_type <span class="type">varchar</span></div>
-                <div class="schema-column">expiry_month <span class="type">int</span></div>
-                <div class="schema-column">expiry_year <span class="type">int</span></div>
-                <div class="schema-column">cvv <span class="type">int</span></div>
-                <div class="schema-column">balance <span class="type">decimal</span></div>
-                <div class="schema-column">status <span class="type">varchar</span></div>
-                <div class="schema-column">card_code <span class="type">char(16)</span></div>
-            </div>
-        </div>
+
+        <!-- Редактор SQL -->
+        <label for="sqlQuery"><strong>Ваш SQL-запрос (автодополнение: Tab или Ctrl+Space):</strong></label>
+        <textarea id="sqlQuery" style="display:none;">SELECT * FROM characters LIMIT 10;</textarea>
+
+        <br>
+        <button class="btn" id="runBtn" onclick="executeQuery()">▶ Выполнить запрос</button>
+        <span class="loading" id="loading">⏳ Выполняется...</span>
+        <span id="rowCount" class="row-count"></span>
+
+        <!-- Результат -->
+        <div id="result"></div>
     </div>
 
-    <!-- Группа 2: Хогвартс -->
-    <h3 class="schema-group-title" style="margin-top: 30px;">Хогвартс</h3>
-    <div class="schema-grid">
-        <div class="schema-table-block">
-            <div class="schema-table-title">characters</div>
-            <div class="schema-columns">
-                <div class="schema-column"><span class="pk">🔑</span> char_id <span class="type">int</span></div>
-                <div class="schema-column">fname <span class="type">varchar</span></div>
-                <div class="schema-column">lname <span class="type">varchar</span></div>
-                <div class="schema-column">age <span class="type">int</span></div>
-                <div class="schema-column">faculty <span class="type">varchar</span></div>
-                <div class="schema-column">patronus <span class="type">varchar</span></div>
-                <div class="schema-column"><span class="fk">🔗</span> book_id <span class="type">int</span> → library</div>
-            </div>
-        </div>
-        <div class="schema-table-block">
-            <div class="schema-table-title">library</div>
-            <div class="schema-columns">
-                <div class="schema-column"><span class="pk">🔑</span> lib_id <span class="type">int</span></div>
-                <div class="schema-column">char_id <span class="type">int</span></div>
-                <div class="schema-column">book_name <span class="type">varchar</span></div>
-                <div class="schema-column">start_date <span class="type">date</span></div>
-                <div class="schema-column">end_date <span class="type">date</span></div>
-                <div class="schema-column">book_id <span class="type">int</span></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Легенда (общая) -->
-    <div class="schema-legend">
-        <span><span class="pk">🔑</span> Первичный ключ</span>
-        <span><span class="fk">🔗</span> Внешний ключ</span>
-    </div>
-</div>
+    <!-- Основной скрипт -->
+    <script src="script.js"></script>
+</body>
+</html>
