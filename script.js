@@ -1,7 +1,7 @@
-// ⬇ АДРЕС ВАШЕГО СЕРВЕРА ⬇
+// ⬇ АДРЕС СЕРВЕРА ⬇
 const PROXY_URL = 'https://sql-proxy-bd.onrender.com/query';
 
-// Инициализация CodeMirror
+// CodeMirror
 const editor = CodeMirror.fromTextArea(document.getElementById('sqlQuery'), {
     mode: 'text/x-sql',
     lineNumbers: true,
@@ -96,8 +96,26 @@ function getDeclension(n) {
     return '';
 }
 
+// ===== АККОРДЕОН =====
+function initAccordion() {
+    document.querySelectorAll('.accordion-toggle').forEach(button => {
+        button.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            content.style.display = isExpanded ? 'none' : 'block';
+            // Меняем иконку
+            const icon = this.querySelector('.accordion-icon');
+            if (icon) {
+                icon.textContent = isExpanded ? '▶' : '▼';
+            }
+        });
+    });
+}
+
 // Автозапуск при загрузке
 window.onload = function() {
+    initAccordion();
     setTimeout(() => {
         executeQuery();
     }, 300);
