@@ -36,7 +36,7 @@ h1 {
     border-radius: 4px;
 }
 
-/* ===== СХЕМА БАЗЫ ДАННЫХ ===== */
+/* ===== СХЕМА БАЗЫ ДАННЫХ (общие контейнеры) ===== */
 .schema {
     background: #f8f9fa;
     border-radius: 8px;
@@ -50,57 +50,62 @@ h1 {
     margin-bottom: 15px;
     color: #1a1a2e;
 }
-.schema-tables {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+
+/* ===== НОВАЯ СЕТКА КАРТОЧЕК ===== */
+.schema-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
+    align-items: start;
 }
-.schema-table {
+
+.schema-table-block {
     background: white;
+    border-radius: 12px;
     border: 2px solid #2d7a3a;
-    border-radius: 8px;
-    min-width: 200px;
-    flex: 1 1 auto;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
-.schema-table-name {
+
+.schema-table-block .schema-table-title {
     background: #2d7a3a;
     color: white;
     padding: 8px 12px;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 14px;
     text-align: center;
-    border-radius: 6px 6px 0 0;
 }
-.schema-columns {
+
+.schema-table-block .schema-columns {
     padding: 8px 12px;
 }
-.schema-column {
-    padding: 4px 0;
-    border-bottom: 1px solid #eee;
-    font-family: monospace;
-    font-size: 0.9rem;
+
+.schema-table-block .schema-column {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid #f0f2f5;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
 }
-.schema-column:last-child {
+
+.schema-table-block .schema-column:last-child {
     border-bottom: none;
 }
-.schema-column .type {
+
+.schema-table-block .schema-column .type {
     color: #6c757d;
-    font-size: 0.8rem;
+    font-size: 10px;
 }
+
 .pk, .fk {
     font-size: 1.1rem;
     margin-right: 4px;
 }
-.schema-arrow {
-    font-size: 2rem;
-    color: #2d7a3a;
-}
+
+/* Легенда */
 .schema-legend {
-    margin-top: 10px;
+    margin-top: 15px;
     display: flex;
     gap: 20px;
     justify-content: center;
@@ -117,6 +122,16 @@ h1 {
 }
 .schema-legend .pk, .schema-legend .fk {
     font-size: 1rem;
+}
+
+/* Заголовки групп */
+.schema-group-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin: 0 0 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #2d7a3a;
 }
 
 /* ===== ПРИМЕРЫ ===== */
@@ -228,16 +243,6 @@ tr:hover {
     border: 1px solid #ddd;
 }
 
-.schema-group-title {
-    font-size: 20px;
-    font-weight: 600;
-    color: #1e4663;
-    margin: 0 0 15px 0;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #16d6ad;
-}
-
-
 /* ===== АДАПТИВНОСТЬ (МОБИЛЬНЫЕ) ===== */
 @media (max-width: 768px) {
     body {
@@ -247,26 +252,8 @@ tr:hover {
     .container {
         padding: 15px;
     }
-    .schema-tables {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .schema-arrow {
-        transform: rotate(90deg);
-        text-align: center;
-    }
-    .schema-table {
-        min-width: unset;
-        width: 100%;
-    }
-    .schema-legend {
-        flex-direction: row;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    .schema-legend span {
-        font-size: 0.8rem;
-        padding: 2px 8px;
+    .schema-grid {
+        grid-template-columns: 1fr 1fr;
     }
     .examples button {
         font-size: 11px;
@@ -290,13 +277,21 @@ tr:hover {
     h1 {
         font-size: 1.5rem;
     }
+    .schema-legend {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 }
 
 @media (max-width: 480px) {
+    .schema-grid {
+        grid-template-columns: 1fr;
+    }
     .schema h2 {
         font-size: 1rem;
     }
-    .schema-column {
+    .schema-table-block .schema-column {
         font-size: 0.8rem;
         flex-wrap: wrap;
     }
