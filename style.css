@@ -228,6 +228,16 @@ tr:hover {
     border: 1px solid #ddd;
 }
 
+.schema-group-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e4663;
+    margin: 0 0 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #16d6ad;
+}
+
+
 /* ===== АДАПТИВНОСТЬ (МОБИЛЬНЫЕ) ===== */
 @media (max-width: 768px) {
     body {
