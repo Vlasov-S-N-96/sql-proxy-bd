@@ -28,135 +28,149 @@
         <div class="schema">
             <h2>Схема базы данных</h2>
 
-            <!-- Группа 1: Интернет-магазин -->
-            <h3 class="schema-group-title">Интернет-магазин</h3>
-            <div class="schema-grid">
-                <!-- Таблица users -->
-                <div class="schema-table-block">
-                    <div class="schema-table-title">users</div>
-                    <div class="schema-columns">
-                        <div class="schema-column"><span class="pk">🔑</span> user_id <span class="type">int</span></div>
-                        <div class="schema-column">login <span class="type">varchar</span></div>
-                        <div class="schema-column">password <span class="type">varchar</span></div>
-                        <div class="schema-column">token <span class="type">varchar</span></div>
-                    </div>
-                </div>
-                <!-- Таблица products -->
-                <div class="schema-table-block">
-                    <div class="schema-table-title">products</div>
-                    <div class="schema-columns">
-                        <div class="schema-column"><span class="pk">🔑</span> product_id <span class="type">int</span></div>
-                        <div class="schema-column">name <span class="type">varchar</span></div>
-                        <div class="schema-column">description <span class="type">text</span></div>
-                        <div class="schema-column">price <span class="type">decimal</span></div>
-                        <div class="schema-column">category <span class="type">varchar</span></div>
-                        <div class="schema-column">manufacturer <span class="type">varchar</span></div>
-                        <div class="schema-column">freeShipping <span class="type">boolean</span></div>
-                    </div>
-                </div>
-                <!-- Таблица orders -->
-                <div class="schema-table-block">
-                    <div class="schema-table-title">orders</div>
-                    <div class="schema-columns">
-                        <div class="schema-column"><span class="pk">🔑</span> order_id <span class="type">int</span></div>
-                        <div class="schema-column"><span class="fk">🔗</span> user_id <span class="type">int</span> → users</div>
-                        <div class="schema-column">status <span class="type">varchar</span></div>
-                        <div class="schema-column">payment_date <span class="type">timestamp</span></div>
-                        <div class="schema-column">delivery_date <span class="type">timestamp</span></div>
-                        <div class="schema-column">total <span class="type">decimal</span></div>
-                    </div>
-                </div>
-                <!-- Таблица cart_items -->
-                <div class="schema-table-block">
-                    <div class="schema-table-title">cart_items</div>
-                    <div class="schema-columns">
-                        <div class="schema-column"><span class="pk">🔑</span> cart_item_id <span class="type">int</span></div>
-                        <div class="schema-column"><span class="fk">🔗</span> user_id <span class="type">int</span> → users</div>
-                        <div class="schema-column"><span class="fk">🔗</span> product_id <span class="type">int</span> → products</div>
-                        <div class="schema-column">quantity <span class="type">int</span></div>
-                    </div>
-                </div>
-                <!-- Таблица order_items -->
-                <div class="schema-table-block">
-                    <div class="schema-table-title">order_items</div>
-                    <div class="schema-columns">
-                        <div class="schema-column"><span class="pk">🔑</span> order_item_id <span class="type">int</span></div>
-                        <div class="schema-column"><span class="fk">🔗</span> order_id <span class="type">int</span> → orders</div>
-                        <div class="schema-column"><span class="fk">🔗</span> product_id <span class="type">int</span> → products</div>
-                        <div class="schema-column">quantity <span class="type">int</span></div>
-                    </div>
-                </div>
-                <!-- Таблица order_items_paid -->
-                <div class="schema-table-block">
-                    <div class="schema-table-title">order_items_paid</div>
-                    <div class="schema-columns">
-                        <div class="schema-column"><span class="pk">🔑</span> id <span class="type">int</span></div>
-                        <div class="schema-column"><span class="fk">🔗</span> user_id <span class="type">int</span> → users</div>
-                        <div class="schema-column"><span class="fk">🔗</span> order_id <span class="type">int</span> → orders</div>
-                        <div class="schema-column"><span class="fk">🔗</span> product_id <span class="type">int</span> → products</div>
-                        <div class="schema-column">quantity <span class="type">smallint</span></div>
-                    </div>
-                </div>
-                <!-- Таблица orders_total -->
-                <div class="schema-table-block">
-                    <div class="schema-table-title">orders_total</div>
-                    <div class="schema-columns">
-                        <div class="schema-column"><span class="pk">🔑</span> user_id <span class="type">int</span> → users</div>
-                        <div class="schema-column">total <span class="type">decimal</span></div>
-                    </div>
-                </div>
-                <!-- Таблица paypal_info -->
-                <div class="schema-table-block">
-                    <div class="schema-table-title">paypal_info</div>
-                    <div class="schema-columns">
-                        <div class="schema-column"><span class="pk">🔑</span> paypal_id <span class="type">int</span></div>
-                        <div class="schema-column">email <span class="type">varchar</span></div>
-                        <div class="schema-column">balance <span class="type">decimal</span></div>
-                        <div class="schema-column">status <span class="type">varchar</span></div>
-                    </div>
-                </div>
-                <!-- Таблица card_info -->
-                <div class="schema-table-block">
-                    <div class="schema-table-title">card_info</div>
-                    <div class="schema-columns">
-                        <div class="schema-column"><span class="pk">🔑</span> card_id <span class="type">int</span></div>
-                        <div class="schema-column">card_type <span class="type">varchar</span></div>
-                        <div class="schema-column">expiry_month <span class="type">int</span></div>
-                        <div class="schema-column">expiry_year <span class="type">int</span></div>
-                        <div class="schema-column">cvv <span class="type">int</span></div>
-                        <div class="schema-column">balance <span class="type">decimal</span></div>
-                        <div class="schema-column">status <span class="type">varchar</span></div>
-                        <div class="schema-column">card_code <span class="type">char(16)</span></div>
+            <!-- Аккордеон 1: Интернет-магазин -->
+            <div class="accordion">
+                <button class="accordion-toggle" aria-expanded="true">
+                    🛒 Интернет-магазин
+                    <span class="accordion-icon">▼</span>
+                </button>
+                <div class="accordion-content" style="display: block;">
+                    <div class="schema-grid">
+                        <!-- Таблица users -->
+                        <div class="schema-table-block">
+                            <div class="schema-table-title">users</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="pk">🔑</span> user_id <span class="type">int</span></div>
+                                <div class="schema-column">login <span class="type">varchar</span></div>
+                                <div class="schema-column">password <span class="type">varchar</span></div>
+                                <div class="schema-column">token <span class="type">varchar</span></div>
+                            </div>
+                        </div>
+                        <!-- Таблица products -->
+                        <div class="schema-table-block">
+                            <div class="schema-table-title">products</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="pk">🔑</span> product_id <span class="type">int</span></div>
+                                <div class="schema-column">name <span class="type">varchar</span></div>
+                                <div class="schema-column">description <span class="type">text</span></div>
+                                <div class="schema-column">price <span class="type">decimal</span></div>
+                                <div class="schema-column">category <span class="type">varchar</span></div>
+                                <div class="schema-column">manufacturer <span class="type">varchar</span></div>
+                                <div class="schema-column">freeShipping <span class="type">boolean</span></div>
+                            </div>
+                        </div>
+                        <!-- Таблица orders -->
+                        <div class="schema-table-block">
+                            <div class="schema-table-title">orders</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="pk">🔑</span> order_id <span class="type">int</span></div>
+                                <div class="schema-column"><span class="fk">🔗</span> user_id <span class="type">int</span> → users</div>
+                                <div class="schema-column">status <span class="type">varchar</span></div>
+                                <div class="schema-column">payment_date <span class="type">timestamp</span></div>
+                                <div class="schema-column">delivery_date <span class="type">timestamp</span></div>
+                                <div class="schema-column">total <span class="type">decimal</span></div>
+                            </div>
+                        </div>
+                        <!-- Таблица cart_items -->
+                        <div class="schema-table-block">
+                            <div class="schema-table-title">cart_items</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="pk">🔑</span> cart_item_id <span class="type">int</span></div>
+                                <div class="schema-column"><span class="fk">🔗</span> user_id <span class="type">int</span> → users</div>
+                                <div class="schema-column"><span class="fk">🔗</span> product_id <span class="type">int</span> → products</div>
+                                <div class="schema-column">quantity <span class="type">int</span></div>
+                            </div>
+                        </div>
+                        <!-- Таблица order_items -->
+                        <div class="schema-table-block">
+                            <div class="schema-table-title">order_items</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="pk">🔑</span> order_item_id <span class="type">int</span></div>
+                                <div class="schema-column"><span class="fk">🔗</span> order_id <span class="type">int</span> → orders</div>
+                                <div class="schema-column"><span class="fk">🔗</span> product_id <span class="type">int</span> → products</div>
+                                <div class="schema-column">quantity <span class="type">int</span></div>
+                            </div>
+                        </div>
+                        <!-- Таблица order_items_paid -->
+                        <div class="schema-table-block">
+                            <div class="schema-table-title">order_items_paid</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="pk">🔑</span> id <span class="type">int</span></div>
+                                <div class="schema-column"><span class="fk">🔗</span> user_id <span class="type">int</span> → users</div>
+                                <div class="schema-column"><span class="fk">🔗</span> order_id <span class="type">int</span> → orders</div>
+                                <div class="schema-column"><span class="fk">🔗</span> product_id <span class="type">int</span> → products</div>
+                                <div class="schema-column">quantity <span class="type">smallint</span></div>
+                            </div>
+                        </div>
+                        <!-- Таблица orders_total -->
+                        <div class="schema-table-block">
+                            <div class="schema-table-title">orders_total</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="pk">🔑</span> user_id <span class="type">int</span> → users</div>
+                                <div class="schema-column">total <span class="type">decimal</span></div>
+                            </div>
+                        </div>
+                        <!-- Таблица paypal_info -->
+                        <div class="schema-table-block">
+                            <div class="schema-table-title">paypal_info</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="pk">🔑</span> paypal_id <span class="type">int</span></div>
+                                <div class="schema-column">email <span class="type">varchar</span></div>
+                                <div class="schema-column">balance <span class="type">decimal</span></div>
+                                <div class="schema-column">status <span class="type">varchar</span></div>
+                            </div>
+                        </div>
+                        <!-- Таблица card_info -->
+                        <div class="schema-table-block">
+                            <div class="schema-table-title">card_info</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="pk">🔑</span> card_id <span class="type">int</span></div>
+                                <div class="schema-column">card_type <span class="type">varchar</span></div>
+                                <div class="schema-column">expiry_month <span class="type">int</span></div>
+                                <div class="schema-column">expiry_year <span class="type">int</span></div>
+                                <div class="schema-column">cvv <span class="type">int</span></div>
+                                <div class="schema-column">balance <span class="type">decimal</span></div>
+                                <div class="schema-column">status <span class="type">varchar</span></div>
+                                <div class="schema-column">card_code <span class="type">char(16)</span></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Группа 2: Хогвартс -->
-            <h3 class="schema-group-title" style="margin-top: 30px;">Хогвартс</h3>
-            <div class="schema-grid">
-                <!-- Таблица characters -->
-                <div class="schema-table-block">
-                    <div class="schema-table-title">characters</div>
-                    <div class="schema-columns">
-                        <div class="schema-column"><span class="pk">🔑</span> char_id <span class="type">int</span></div>
-                        <div class="schema-column">fname <span class="type">varchar</span></div>
-                        <div class="schema-column">lname <span class="type">varchar</span></div>
-                        <div class="schema-column">age <span class="type">int</span></div>
-                        <div class="schema-column">faculty <span class="type">varchar</span></div>
-                        <div class="schema-column">patronus <span class="type">varchar</span></div>
-                        <div class="schema-column"><span class="fk">🔗</span> book_id <span class="type">int</span> → library</div>
-                    </div>
-                </div>
-                <!-- Таблица library -->
-                <div class="schema-table-block">
-                    <div class="schema-table-title">library</div>
-                    <div class="schema-columns">
-                        <div class="schema-column"><span class="pk">🔑</span> lib_id <span class="type">int</span></div>
-                        <div class="schema-column">char_id <span class="type">int</span></div>
-                        <div class="schema-column">book_name <span class="type">varchar</span></div>
-                        <div class="schema-column">start_date <span class="type">date</span></div>
-                        <div class="schema-column">end_date <span class="type">date</span></div>
-                        <div class="schema-column">book_id <span class="type">int</span></div>
+            <!-- Аккордеон 2: Хогвартс -->
+            <div class="accordion">
+                <button class="accordion-toggle" aria-expanded="false">
+                    🏰 Хогвартс
+                    <span class="accordion-icon">▶</span>
+                </button>
+                <div class="accordion-content" style="display: none;">
+                    <div class="schema-grid">
+                        <!-- Таблица characters -->
+                        <div class="schema-table-block">
+                            <div class="schema-table-title">characters</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="pk">🔑</span> char_id <span class="type">int</span></div>
+                                <div class="schema-column">fname <span class="type">varchar</span></div>
+                                <div class="schema-column">lname <span class="type">varchar</span></div>
+                                <div class="schema-column">age <span class="type">int</span></div>
+                                <div class="schema-column">faculty <span class="type">varchar</span></div>
+                                <div class="schema-column">patronus <span class="type">varchar</span></div>
+                                <div class="schema-column"><span class="fk">🔗</span> book_id <span class="type">int</span> → library</div>
+                            </div>
+                        </div>
+                        <!-- Таблица library -->
+                        <div class="schema-table-block">
+                            <div class="schema-table-title">library</div>
+                            <div class="schema-columns">
+                                <div class="schema-column"><span class="pk">🔑</span> lib_id <span class="type">int</span></div>
+                                <div class="schema-column">char_id <span class="type">int</span></div>
+                                <div class="schema-column">book_name <span class="type">varchar</span></div>
+                                <div class="schema-column">start_date <span class="type">date</span></div>
+                                <div class="schema-column">end_date <span class="type">date</span></div>
+                                <div class="schema-column">book_id <span class="type">int</span></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
