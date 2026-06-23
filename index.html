@@ -13,14 +13,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/sql-hint.min.js"></script>
 
-    <!-- Ваши стили -->
+    <!-- Основные стили -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>SQL Trainer</h1>
 
     <div class="container">
-        <!-- Информация о доступных таблицах -->
+        <!-- Информация о таблицах -->
         <div class="info">
             <strong>Доступные таблицы:</strong> <code>characters</code>, <code>library</code>
         </div>
@@ -42,7 +42,7 @@
                         <div class="schema-column"><span class="fk">🔗</span> book_id <span class="type">int4</span> → library.lib_id</div>
                     </div>
                 </div>
-                <!-- Стрелка связи -->
+                <!-- Стрелка -->
                 <div class="schema-arrow">⟶</div>
                 <!-- Таблица library -->
                 <div class="schema-table">
@@ -57,6 +57,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Легенда -->
             <div class="schema-legend">
                 <span><span class="pk">🔑</span> Первичный ключ</span>
                 <span><span class="fk">🔗</span> Внешний ключ</span>
@@ -83,7 +84,7 @@
         <div id="result"></div>
     </div>
 
-    <!-- Ваш скрипт -->
+    <!-- Основной скрипт -->
     <script src="script.js"></script>
 </body>
 </html>
