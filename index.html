@@ -194,10 +194,11 @@
         <textarea id="sqlQuery" style="display:none;">SELECT * FROM characters LIMIT 10;</textarea>
 
         <br>
-        <button class="btn" id="runBtn" onclick="executeQuery()">▶ Выполнить запрос</button>
-        <br>
-        <span class="loading" id="loading">⏳ Выполняется...</span>
-        <span id="rowCount" class="row-count"></span>
+        <div class="btn-group">
+            <button class="btn" id="runBtn" onclick="executeQuery()">▶ Выполнить запрос</button>
+            <span class="loading" id="loading">⏳ Выполняется...</span>
+            <span id="rowCount" class="row-count"></span>
+        </div>
 
         <!-- Результат -->
         <div id="result"></div>
